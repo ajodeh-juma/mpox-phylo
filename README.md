@@ -91,7 +91,7 @@ wget -c https://github.com/ajodeh-juma/mpox-phylo/raw/refs/heads/master/data.zip
 ```
 
 ```
-unzip
+unzip data.zip
 ```
 
 - Inspect the data
