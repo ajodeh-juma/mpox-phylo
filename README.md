@@ -31,8 +31,7 @@ miniforge https://docs.conda.io/projects/conda/en/latest/user-guide/install/inde
 	- Install the correct executable depending on your OS
 
 ## Dataset 
-We will construct a dataset containing about 200 Ebola virus sequences from West
-Africa following the 2013-2016 epidemic. These sequences will be obtained from
+We will construct a dataset containing about 50 Mpox virus sequences from the DRC. These sequences will be obtained from
 Pathoplexus (https://pathoplexus.org/).
 
 <br>
