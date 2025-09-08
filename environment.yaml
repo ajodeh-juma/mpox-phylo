@@ -13,3 +13,4 @@ dependencies:
   - bioconda::mafft
   - bioconda::seqkit
   - bioconda::squirrel
+  - bioconda::figtree
