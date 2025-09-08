@@ -339,8 +339,19 @@ conda activate iqtree
 iqtree -s ./output/mafft/mpox_dedup_aln.fasta -m TEST -T 4 -bb 1000 -redo --prefix ./output/iqtree/mpox
 ```
 
+Enrichment of APOBEC3-mutations in the MPXV population are a signature of sustained human-to-human transmission. Identifying APOBEC3-like mutations in MPXV genomes from samples in a new outbreak can be a piece of evidence to support sustained human transmission of mpox. Squirrel can run an APOBEC3-reconstruction and map these mutations onto the phylogeny.
+
+Squirrel maps each query genome in the input file against a reference genome specific to each clade using minimap2. Using gofasta, the mapping file is then converted into a multiple sequence alignment.
+
+For Clade II, the reference used is NC_063383 and for Clade I, we use NC_003310. This means that all coordinates within an alignment will be relative to these references. A benefit of this is that within a clade, alignment files and be combined without having to recalculate the alignment.
 
 
+
+- Get outgroups
+
+```
+
+```
 
 ```
 squirrel \
