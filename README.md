@@ -377,7 +377,7 @@ squirrel \
     ./output/mafft/mpox_all_consensus_aln.fasta \
     --no-mask \
     --seq-qc \
-	--assembly-refs NC_003310 \
+	--assembly-refs ./ncbi/NC_003310.fasta \
     --outdir ./output/squirrel \
     --outfile all_consensus.aln.fasta \
     --threads 1 \
