@@ -130,7 +130,7 @@ accessions and sampling dates
 1. Create a `conda` environment using the `environment.yaml`
 
 	```
-
+	wget https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/environment.yaml
 	```
 
 	```
