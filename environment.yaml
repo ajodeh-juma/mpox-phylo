@@ -1,0 +1,15 @@
+# You can use this file to create a conda environment for this pipeline:
+#   conda env create -f environment.yaml
+name: phylo
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+# bioconda packages
+  - bioconda::aliview
+  - bioconda::csvtk
+  - bioconda::iqtree
+  - bioconda::mafft
+  - bioconda::seqkit
+  - bioconda::squirrel
