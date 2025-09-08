@@ -18,18 +18,6 @@ miniforge https://docs.conda.io/projects/conda/en/latest/user-guide/install/inde
    Ensure Java is installed on your computer
 
 
-2. Installing AliView (https://ormbunkar.se/aliview/#DOWNLOAD)
-
-	> **Note**
-
-	- Install the correct executable depending on your OS
-
-3. Installing TempEst (https://tree.bio.ed.ac.uk/software/tempest/)
-
-	> **Note**
-
-	- Install the correct executable depending on your OS
-
 ## Dataset 
 We will construct a dataset containing about 50 Mpox virus sequences from the DRC. These sequences will be obtained from
 Pathoplexus (https://pathoplexus.org/).
@@ -41,7 +29,7 @@ Pathoplexus (https://pathoplexus.org/).
 
 ## Retrieving the data
 
-We will collate data collected between August 01, 2024, and August 30, 2024 from
+We will collate data collected between August 01, 2024, and August 15, 2024 from
 the Democratic Republic of Congo (DRC).
 
 <br>
