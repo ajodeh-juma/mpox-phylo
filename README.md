@@ -350,12 +350,34 @@ For Clade II, the reference used is NC_063383 and for Clade I, we use NC_003310.
 - Get outgroups
 
 ```
+wget -c https://github.com/ajodeh-juma/mpox-phylo/blob/master/ncbi.zip
+```
+
+- extract
+```
+unzip ncbi.zip
+```
+
+- Concatenate with the other sequences
 
 ```
+cat ./ncbi/*.fasta > ./data/ref_sequences.fasta
+```
+
+- Rerun the alignment step with the additional reference sequences 
+
+```
+mafft --add \
+  ./data/ref_sequences.fasta \
+  ./output/mafft/mpox_dedup_aln.fasta > \
+  ./output/mafft/mpox_ref_aln.fasta
+```
+
+
 
 ```
 squirrel \
-    ./output/mafft/mpox_dedup_aln.fasta \
+    ./output/mafft/mpox_ref_aln.fasta \
     --no-mask \
     --seq-qc \
     --outdir ./output/squirrel \
