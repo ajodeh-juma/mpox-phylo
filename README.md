@@ -407,24 +407,15 @@ Regardless of the underlying explanation, it is common practice to exclude such 
 - Copy and paste the outlier taxa into a file named `outliers.txt` in the `data` directory
 
 
-<!-- ```
-conda activate seqkit
-``` -->
 
 ```
 seqkit grep -v -f ./data/outliers.txt ./output/mafft/mpox_dedup_aln.fasta > ./output/iqtree/mpox_aln_clean.fasta
 ```
-<!-- 
-```
-conda deactivate
-``` -->
 
 
-## Rerun the maximum likelihood phylogenetic tree inference
-<!-- 
-```
-conda activate iqtree
-``` -->
+
+<!-- ## Rerun the maximum likelihood phylogenetic tree inference
+
 
 ```
 iqtree -s ./output/iqtree/mpox_aln_clean.fasta -m HKY -T 4 -bb 1000 -redo --prefix ./output/iqtree/mpox_clean
@@ -435,4 +426,4 @@ iqtree -s ./output/iqtree/mpox_aln_clean.fasta -m HKY -T 4 -bb 1000 -redo --pref
 - What is the substitution rate of the Ebola sequences following exclusion of potential outliers?
 - When did the Ebola outbreak of in Sierra Leone start?
 
-Compare your results with what was reported by Dudas and Rambaut 2014 and Dudas et al. 2017.
+Compare your results with what was reported by Dudas and Rambaut 2014 and Dudas et al. 2017. -->
