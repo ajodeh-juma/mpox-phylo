@@ -1,0 +1,14 @@
+# You can use this file to create a conda environment for this pipeline:
+#   conda env create -f environment.yaml
+name: vadr-env
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+dependencies:
+# bioconda packages
+  
+  - bioconda::infernal
+  - bioconda::perl-bio-easel>0.16
+  - bioconda::sequip
+  - bioconda::vadr=1.6.4

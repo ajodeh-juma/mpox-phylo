@@ -13,11 +13,6 @@
 Note: We recommend installing the minimal version of conda such as miniconda or
 miniforge https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html.
 
-> **Note**
-   
-   Ensure Java is installed on your computer
-
-
 ## Dataset 
 We will construct a dataset containing about 50 Mpox virus sequences from the DRC. These sequences will be obtained from
 Pathoplexus (https://pathoplexus.org/).
@@ -458,3 +453,165 @@ iqtree -s ./output/iqtree/mpox_aln_clean.fasta -m HKY -T 4 -bb 1000 -redo --pref
 - When did the Ebola outbreak of in Sierra Leone start?
 
 Compare your results with what was reported by Dudas and Rambaut 2014 and Dudas et al. 2017. -->
+
+
+
+# Submitting Monkeypox sequence to NCBI GenBank
+
+GenBank also accepts partial Monkeypox genomes, including single gene or gene
+fragments as long as the total length is over 50 nucleotides. You may submit
+your assembled Monkeypox sequences using the web-based
+[BankIt](https://www.ncbi.nlm.nih.gov/WebSub/) submission tool or
+the command-line [table2asn](https://www.ncbi.nlm.nih.gov/genbank/table2asn/)
+program.
+
+
+
+## Setup the data submission directory
+
+- Change to `home` directory
+```
+cd 
+```
+
+- Create directories for the submission
+
+```
+mkdir -p ${HOME}/acdc_mpox2025/data_submission/{ncbi,pathoplexus}
+```
+
+```
+cd ${HOME}/acdc_mpox2025
+```
+
+
+## Prepare files
+Here we will use `dummy` data to simulate the submission process.
+We will select the top three sequences with highest `completeness`.
+
+>**Note**
+	We will **NOT** submit the data
+
+
+
+<!-- - **Select the genomes**
+
+```
+tail -n+2 ./phylo/data/metadata.tsv | cut -f 1,18 | sort -k2 -n -r | cut -f 1 | head -n 2 > \
+./data_submission/ncbi/accessions.txt
+```
+
+```
+tail -n+2 ./phylo/data/metadata.tsv | cut -f 1,18 | sort -k2 -n -r | cut -f 1 | tail -n 2 >> \
+./data_submission/ncbi/accessions.txt
+``` -->
+
+
+<!-- - **Extract** -->
+
+<!-- ```
+seqkit grep -f ./data_submission/ncbi/accessions.txt ./phylo/data/mpox.fasta > ./data_submission/mpox_sequences.fasta
+``` -->
+
+- Sequences
+
+```
+wget -c 
+```
+
+
+- Source modifier table
+
+BankIt provides two methods for entering information about the source of your Monkeypox virus submission. You can enter the data in forms or by a tab-delimited table. We recommend using a table for submissions containing multiple sequences.
+
+The following information is required for Monkeypox submissions:
+
+- unique **isolate** name
+- **collection date** including month and day if known; this is the date that the virus sample was collected in the field. Examples: 2022-01-30, Oct-2002.
+- geographic location name (**geo_loc_name**) where sample was collected. See [INSDC geographic location name list](https://www.ncbi.nlm.nih.gov/genbank/collab/country/) for allowed names and format. Use the approved geographic location name first, followed by a colon and then additional information separated by commas, in larger to smaller order, i.e. geographic location name: state, city. Example: "USA: Maryland, Bethesda".
+- **host** organism; if the virus was not isolated from a host organism, enter
+  "environment". If you would like to include additional information about the
+  host, use the host name, followed by a semi-colon. Example: Homo sapiens; age
+  43
+
+Optional information encouraged for Monkeypox submissions:
+
+- **isolation-source**; the physical environment where the virus was collected. Example: skin lesion
+- passage details can be included in a source note
+The source table should contain a single row for each sequence in the FASTA file
+prepared above. Column headers must match the name of the modifier in the [INSDC
+Feature Table](https://www.insdc.org/submitting-standards/feature-table/). The
+table can be prepared in excel and saved as a tab-delimited file. 
+
+>**Note** 
+Please
+remember to check the collection date of any files saved in excel.
+
+
+
+**Example source table for five sequences**
+
+Note spacing in table is for display purposes; the individual columns must be separated by a `tab`.
+
+Sequence_ID | isolate | geo_loc_name | collection_date | host | note | isolation_source
+--- | --- | --- | --- | --- | --- | ---
+MPOXV001 | MPOXV001 | Democratic Republic of the Congo: Maindombe | 2024-08-10 | Homo sapiens; age 34 | | skin |
+MPOXV002 | MPOXV002 | Democratic Republic of the Congo: Kinshasa | 2024-08-13 | Homo sapiens; age 45 | | skin |
+
+
+<!-- MPOXV003 | MPOXV003 | Democratic Republic of the Congo: Kivu | 2024-08-01 | Homo sapiens; age 28 | | skin |
+MPOXV004 | MPOXV004 | Democratic Republic of the Congo: Goma | 2024-08-11 | Homo sapiens; age 37 | | skin |
+MPOXV005 | MPOXV005 | Democratic Republic of the Congo: Kinshasa | 2024-08-12 | Homo sapiens; age 43 | | skin | -->
+
+
+
+- Download the sample source modifiers table
+
+```
+curl -o ./data_submission/ncbi/source-table.txt https://www.ncbi.nlm.nih.gov/WebSub/html/help/sample_files/source-table-sample.txt
+```
+
+- Edit the table in excel to add the correct details as shown above and save as `tab-delimited` file.
+
+>**Note** 
+Please
+remember to check the collection date of any files saved in excel.
+
+
+- Features
+
+NCBI are not currently requiring the addition of features (gene and coding
+region) for Monkeypox sequences to expedite their release. If you have this
+information, it can be supplied using a 5-column feature table. When your
+sequence submission is received, GenBank staff will attempt to add gene and
+coding region features using VADR. If you would like to check your sequences
+before submission, you can run `VADR` yourself and check for issues.
+
+
+To prepare a feature file, one can use `vadr`
+
+https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html
+
+```
+mamba create -n vadr-env bioconda::vadr
+```
+
+```
+conda activate vadr
+```
+
+
+
+# Select submission tool
+
+All submissions via BankIt or the Submission Portal require an NCBI submission account. If you do not yet have an NCBI Account, please follow the onscreen directions to set up your account.
+
+1. Go to the [submit page](https://www.ncbi.nlm.nih.gov/WebSub/)
+2. If you are not logged into your NCBI Account, please do so using the Log in button in the upper right corner
+3. Select 'Sequence data not listed above', the last option in the list of sequence data types to be submitted and click on the Start button
+4. Click 'Start BankIt Submission' and you can begin your submission
+
+
+# Reference
+
+https://www.ncbi.nlm.nih.gov/genbank/monkeypox_submission/?utm_source=ncbi_insights&utm_medium=referral&utm_term=virus-mpox-20240821

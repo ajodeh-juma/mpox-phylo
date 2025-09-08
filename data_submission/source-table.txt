@@ -1,0 +1,3 @@
+Sequence_ID	isolate	geo_loc_name	collection_date	host	note	isolation_source
+MPOXV001	MPOXV001	Democratic Republic of the Congo: Maindombe	2024-08-10	Homo sapiens; age 34		skin
+MPOXV002	MPOXV002	Democratic Republic of the Congo: Kinshasa	2024-08-13	Homo sapiens; age 45		skin
