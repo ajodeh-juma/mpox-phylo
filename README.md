@@ -364,6 +364,7 @@ unzip ncbi.zip
 cat ./ncbi/*.fasta > ./data/ref_sequences.fasta
 ```
 
+
 - Rerun the alignment step with the additional reference sequences 
 
 ```
@@ -374,10 +375,18 @@ mafft --add \
 ```
 
 
+- Rename the sequence headers
+
+```
+sed 's/\.1.*//g' ./output/mafft/mpox_ref_aln.fasta \
+    > ./output/mafft/mpox_all_consensus_aln.fasta
+```
+
+
 
 ```
 squirrel \
-    ./output/mafft/mpox_ref_aln.fasta \
+    ./output/mafft/mpox_all_consensus_aln.fasta \
     --no-mask \
     --seq-qc \
     --outdir ./output/squirrel \
