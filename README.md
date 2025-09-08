@@ -90,6 +90,10 @@ If you dont have the data, use this command to download the data within your
 wget -c https://github.com/ajodeh-juma/mpox-phylo/raw/refs/heads/master/data.zip
 ```
 
+```
+unzip
+```
+
 - Inspect the data
 
 	- **Examine the `mpox.fasta` file that you downloaded?**
