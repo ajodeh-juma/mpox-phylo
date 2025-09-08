@@ -83,6 +83,12 @@ the Democratic Republic of Congo (DRC).
 		to the terms of use and doenload the data and save as `mpox.fasta` in
 		the `data` directory
 
+If you dont have the data, use this command to download the data within your
+`phylo` directory
+
+```
+wget -c https://github.com/ajodeh-juma/mpox-phylo/raw/refs/heads/master/data.zip
+```
 
 - Inspect the data
 
