@@ -1,3 +1,6 @@
 Sequence_ID	isolate	geo_loc_name	collection_date	host	note	isolation_source
-MPOXV001	MPOXV001	Democratic Republic of the Congo: Maindombe	2024-08-10	Homo sapiens; age 34		skin
-MPOXV002	MPOXV002	Democratic Republic of the Congo: Kinshasa	2024-08-13	Homo sapiens; age 45		skin
+MPOXV001	MPXV/Human/DRC/2024/2024/P001	Democratic Republic of the Congo: Maindombe	2024-08-10	Homo sapiens; age 34		skin
+MPOXV002	MPXV/Human/DRC/2024/2024/P002	Democratic Republic of the Congo: Kinshasa	2024-08-13	Homo sapiens; age 45		skin
+ON803440.1	MpxV/human/CAN/UN-NML-2954/2022	Canada	2022-05-22	Homo sapiens; age 33		swab
+ON853669.1	MPXV/Germany/2022/RKI089	Germany	2022-06-01	Homo sapiens; age 54		swab
+ON843168.1	Monkeypox/PT0032/2022	Portugal	2022-06-05	Homo sapiens; age 42		skin
