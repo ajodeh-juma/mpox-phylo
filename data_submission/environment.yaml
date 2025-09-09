@@ -7,8 +7,9 @@ channels:
   - bioconda
 dependencies:
 # bioconda packages
-  
+  - bioconda::csvtk
   - bioconda::infernal
   - bioconda::perl-bio-easel>0.16
   - bioconda::sequip
+  - bioconda::seqkit
   - bioconda::vadr=1.6.4
