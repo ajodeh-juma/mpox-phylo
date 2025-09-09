@@ -481,7 +481,7 @@ mkdir -p ${HOME}/acdc_mpox2025/data_submission/{ncbi,pathoplexus}
 ```
 
 ```
-cd ${HOME}/acdc_mpox2025
+cd ${HOME}/acdc_mpox2025/data_submission/ncbi
 ```
 
 
@@ -516,7 +516,17 @@ seqkit grep -f ./data_submission/ncbi/accessions.txt ./phylo/data/mpox.fasta > .
 - Sequences
 
 ```
-wget -c 
+wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/sequences/MPOXV001.fasta
+```
+
+```
+wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/sequences/MPOXV002.fasta
+```
+
+- Concatenate the sequences
+
+```
+cat MPOXV* > mpox_sequences.fasta
 ```
 
 
@@ -568,14 +578,21 @@ MPOXV005 | MPOXV005 | Democratic Republic of the Congo: Kinshasa | 2024-08-12 | 
 - Download the sample source modifiers table
 
 ```
-curl -o ./data_submission/ncbi/source-table.txt https://www.ncbi.nlm.nih.gov/WebSub/html/help/sample_files/source-table-sample.txt
+wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/source-table.txt
 ```
 
-- Edit the table in excel to add the correct details as shown above and save as `tab-delimited` file.
 
->**Note** 
-Please
-remember to check the collection date of any files saved in excel.
+# Select submission tool
+
+All submissions via BankIt or the Submission Portal require an NCBI submission account. If you do not yet have an NCBI Account, please follow the onscreen directions to set up your account.
+
+1. Go to the [submit page](https://www.ncbi.nlm.nih.gov/WebSub/)
+2. If you are not logged into your NCBI Account, please do so using the Log in button in the upper right corner
+3. Select 'Sequence data not listed above', the last option in the list of sequence data types to be submitted and click on the Start button
+4. Click 'Start BankIt Submission' and you can begin your submission
+
+
+
 
 
 - Features
@@ -592,24 +609,28 @@ To prepare a feature file, one can use `vadr`
 
 https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html
 
-```
-mamba create -n vadr-env bioconda::vadr
-```
+
+- Create a conda environemnt
 
 ```
-conda activate vadr
+wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/environment.yaml
 ```
 
+```
+mamba env create -f environment.yaml
+```
 
+- Activate
 
-# Select submission tool
+```
+conda activate vadr-env
+```
 
-All submissions via BankIt or the Submission Portal require an NCBI submission account. If you do not yet have an NCBI Account, please follow the onscreen directions to set up your account.
+- Download the model for MPOXV
 
-1. Go to the [submit page](https://www.ncbi.nlm.nih.gov/WebSub/)
-2. If you are not logged into your NCBI Account, please do so using the Log in button in the upper right corner
-3. Select 'Sequence data not listed above', the last option in the list of sequence data types to be submitted and click on the Start button
-4. Click 'Start BankIt Submission' and you can begin your submission
+```
+download-vadr-models.sh mpxv
+```
 
 
 # Reference
