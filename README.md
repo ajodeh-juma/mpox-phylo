@@ -477,7 +477,7 @@ cd
 - Create directories for the submission
 
 ```
-mkdir -p ${HOME}/acdc_mpox2025/data_submission/ncbi/vadr
+mkdir -p ${HOME}/acdc_mpox2025/data_submission/ncbi/vadr/{output,models}
 ```
 
 ```
@@ -516,11 +516,11 @@ seqkit grep -f ./data_submission/ncbi/accessions.txt ./phylo/data/mpox.fasta > .
 - Sequences
 
 ```
-wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/sequences/MPOXV001.fasta
+wget -c https://github.com/ajodeh-juma/mpox-phylo/raw/refs/heads/master/data_submission/sequences/sequences.zip
 ```
 
 ```
-wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/master/data_submission/sequences/MPOXV002.fasta
+unzip sequences.zip
 ```
 
 - Concatenate the sequences
@@ -579,19 +579,6 @@ wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/mast
 ```
 
 
-# Select submission tool
-
-All submissions via BankIt or the Submission Portal require an NCBI submission account. If you do not yet have an NCBI Account, please follow the onscreen directions to set up your account.
-
-1. Go to the [submit page](https://www.ncbi.nlm.nih.gov/WebSub/)
-2. If you are not logged into your NCBI Account, please do so using the Log in button in the upper right corner
-3. Select 'Sequence data not listed above', the last option in the list of sequence data types to be submitted and click on the Start button
-4. Click 'Start BankIt Submission' and you can begin your submission
-
-
-
-
-
 - Features
 
 NCBI are not currently requiring the addition of features (gene and coding
@@ -626,13 +613,13 @@ mamba activate vadr-env
 - Download the model for MPOXV
 
 ```
-wget -c https://ftp.ncbi.nlm.nih.gov/pub/nawrocki/vadr-models/mpxv/1.4.2-1/vadr-models-mpxv-1.4.2-1.tar.gz
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/nawrocki/vadr-models/mpxv/1.4.2-1/vadr-models-mpxv-1.4.2-1.tar.gz -P ./vadr/models
 ```
 
 - Extract
 
 ```
-tar -zxvf vadr-models-mpxv-1.4.2-1.tar.gz
+tar -zxvf ./vadr/models/vadr-models-mpxv-1.4.2-1.tar.gz -C ./vadr/models
 ```
 
 
@@ -659,7 +646,7 @@ trimmed file <trimmed-fasta-file>, execute:
 fasta-trim-terminal-ambigs.pl \
   --minlen 50 \
   --maxlen 210000 \
-  mpox_sequences.fa \
+  mpox_sequences.fa > \
   mpox_sequences.trimmed.fa
 ```
 
@@ -690,10 +677,54 @@ There are four main stages to v-annotate.pl
 ```
 v-annotate.pl \
   -f \
-  --mdir ./vadr-models-mpxv-1.4.2-1 \
+  --split \
+  --cpu 2 \
+  --glsearch \
+  --minimap2 -s -r --nomisc \
+  --mkey mpxv \
+  --r_lowsimok \
+  --r_lowsimxd 100 \
+  --r_lowsimxl 2000 \
+  --alt_pass discontn,dupregin \
+  --s_overhang 150 \
+  --mdir ./vadr/models/vadr-models-mpxv-1.4.2-1 \
   mpox_sequences.trimmed.fa \
   ./vadr/mpox
 ```
+
+
+## Select sequences that have passed and submit
+
+
+```
+grep '>Feature' ./vadr/output/output.vadr.pass.tbl | sed 's/>Feature //g' > accessions_to_submit.txt
+```
+
+
+```
+seqkit grep -f \
+  ./accessions_to_submit.txt \
+  ./mpox_sequences.trimmed.fa > \
+  ./mpox_genomes_to_submit.fa
+```
+
+## Select the source modifiers for the selected genome sequences
+
+```
+```
+
+
+# Select submission tool
+
+All submissions via BankIt or the Submission Portal require an NCBI submission account. If you do not yet have an NCBI Account, please follow the onscreen directions to set up your account.
+
+1. Go to the [submit page](https://www.ncbi.nlm.nih.gov/WebSub/)
+2. If you are not logged into your NCBI Account, please do so using the Log in button in the upper right corner
+3. Select 'Sequence data not listed above', the last option in the list of sequence data types to be submitted and click on the Start button
+4. Click 'Start BankIt Submission' and you can begin your submission
+
+
+
 
 
 # Reference
