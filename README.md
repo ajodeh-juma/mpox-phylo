@@ -477,7 +477,7 @@ cd
 - Create directories for the submission
 
 ```
-mkdir -p ${HOME}/acdc_mpox2025/data_submission/{ncbi,pathoplexus}
+mkdir -p ${HOME}/acdc_mpox2025/data_submission/ncbi/vadr
 ```
 
 ```
@@ -526,7 +526,7 @@ wget -c https://raw.githubusercontent.com/ajodeh-juma/mpox-phylo/refs/heads/mast
 - Concatenate the sequences
 
 ```
-cat MPOXV* > mpox_sequences.fasta
+cat *.fasta > mpox_sequences.fa
 ```
 
 
@@ -565,14 +565,11 @@ Note spacing in table is for display purposes; the individual columns must be se
 
 Sequence_ID | isolate | geo_loc_name | collection_date | host | note | isolation_source
 --- | --- | --- | --- | --- | --- | ---
-MPOXV001 | MPOXV001 | Democratic Republic of the Congo: Maindombe | 2024-08-10 | Homo sapiens; age 34 | | skin |
-MPOXV002 | MPOXV002 | Democratic Republic of the Congo: Kinshasa | 2024-08-13 | Homo sapiens; age 45 | | skin |
-
-
-<!-- MPOXV003 | MPOXV003 | Democratic Republic of the Congo: Kivu | 2024-08-01 | Homo sapiens; age 28 | | skin |
-MPOXV004 | MPOXV004 | Democratic Republic of the Congo: Goma | 2024-08-11 | Homo sapiens; age 37 | | skin |
-MPOXV005 | MPOXV005 | Democratic Republic of the Congo: Kinshasa | 2024-08-12 | Homo sapiens; age 43 | | skin | -->
-
+MPOXV001 | MPXV/Human/DRC/2024/2024/P001 | Democratic Republic of the Congo: Maindombe | 2024-08-10 | Homo sapiens; age 34 | skin
+MPOXV002 | MPXV/Human/DRC/2024/2024/P002 | Democratic Republic of the Congo: Kinshasa | 2024-08-13 | Homo sapiens; age 45 | skin
+ON803440.1 | MpxV/human/CAN/UN-NML-2954/2022 | Canada | 2022-05-22 | Homo sapiens; age 33 | swab
+ON853669.1 | MPXV/Germany/2022/RKI089 | Germany | 2022-06-01 | Homo sapiens; age 54 | swab
+ON843168.1 | Monkeypox/PT0032/2022 | Portugal | 2022-06-05 | Homo sapiens; age 42 | skin
 
 
 - Download the sample source modifiers table
@@ -623,13 +620,79 @@ mamba env create -f environment.yaml
 - Activate
 
 ```
-conda activate vadr-env
+mamba activate vadr-env
 ```
 
 - Download the model for MPOXV
 
 ```
-download-vadr-models.sh mpxv
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/nawrocki/vadr-models/mpxv/1.4.2-1/vadr-models-mpxv-1.4.2-1.tar.gz
+```
+
+- Extract
+
+```
+tar -zxvf vadr-models-mpxv-1.4.2-1.tar.gz
+```
+
+
+- Remove terminal ambiguous nucleotides
+Remove terminal ambiguous nucleotides from your input fasta sequence file using
+the `fasta-trim-terminal-ambigs.pl` script in `$VADRSCRIPTSDIR/miniscripts/`.
+GenBank processing of viral sequences typically includes removing ambiguous
+nucleotides from the beginning and ends of sequences, and also removing
+sequences that are less than `50nt` or more than `210,000nt` (after trimming).
+
+
+>**WARNING**: the `fasta-trim-terminal-ambigs.pl` script will not exactly
+>reproduce the trimming that the GenBank pipeline does in some rare cases, but
+>should fix the large majority of the discrepancies you might see between local
+>VADR results and GenBank results.
+
+
+
+To remove terminal ambiguous nucleotides from your sequence file
+`mpox_sequences.fa` and to remove short and long sequences to create a new
+trimmed file <trimmed-fasta-file>, execute:
+
+```
+fasta-trim-terminal-ambigs.pl \
+  --minlen 50 \
+  --maxlen 210000 \
+  mpox_sequences.fa \
+  mpox_sequences.trimmed.fa
+```
+
+- Annotate to generate the features file
+
+`v-annotate.pl` will use the `mpxv` VADR models to analyze and annotate
+sequences the input sequence file, `mpox_sequences.fasta`. 
+
+
+There are four main stages to v-annotate.pl
+
+1. Classification: each sequence S in the input file is compared against all
+   models in the model library to determine the best-matching (highest-scoring)
+   model M(S) for each sequence.
+
+2. Coverage determination: each sequence S is compared again to M(S) to
+   determine the coverage of S, which is basically the fraction of nucleotides
+   in S that appear to be homologous (sufficiently similar) to M(S).
+
+3. Alignment and feature mapping: each sequence S is aligned to M(S) and based
+   on that alignment, features of M(S) are mapped onto S.
+
+4. Protein validation of CDS features: for each sequence S that has 1 or more
+   predicted CDS features, blastx or hmmsearch is used to compare the predicted
+   CDS and the full sequence S against the VADR library BLAST or HMM DB.
+
+
+```
+v-annotate.pl \
+  -f \
+  --mdir ./vadr-models-mpxv-1.4.2-1 \
+  mpox_sequences.trimmed.fa \
+  ./vadr/mpox
 ```
 
 
